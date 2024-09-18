@@ -1,19 +1,36 @@
 use super::T;
+use super::module_name;
 
 use pyo3::prelude::*;
 
-#[path = "./builder.rs"]
-mod builder;
+#[pyclass]
+struct Problem {
+    _marker: std::marker::PhantomData<T>,
+    _b: Option<Builder>,
+}
 
-#[path = "./problem.rs"]
-mod problem;
+#[pyclass]
+struct Builder {
+    _marker: std::marker::PhantomData<T>,
+}
 
-pub fn register_module(
-    parent_module: &Bound<'_, PyModule>,
-    name: &str
+#[pymethods]
+impl Builder {
+    #[new]
+    pub fn new() -> Builder {
+        Builder { _marker: std::marker::PhantomData::<T> }
+    }
+
+    fn get_problem(&self) -> Problem {
+        Problem { _marker: std::marker::PhantomData::<T>, _b: None }
+    }
+}
+
+pub fn add_to_parent_module(
+    parent_module: &Bound<'_, PyModule>
 ) -> PyResult<()> {
-    let m = PyModule::new_bound(parent_module.py(), name)?;
-    m.add_class::<builder::Builder>()?;
-    m.add_class::<problem::Problem>()?;
+    let m = PyModule::new_bound(parent_module.py(), &module_name())?;
+    m.add_class::<Builder>()?;
+    m.add_class::<Problem>()?;
     parent_module.add_submodule(&m)
 }
