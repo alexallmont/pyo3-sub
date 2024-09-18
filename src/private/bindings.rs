@@ -1,5 +1,4 @@
-use super::T;
-use super::MODULE_NAME;
+use super::{MODULE_NAME, TYPE_NAME, T};
 
 use pyo3::prelude::*;
 
@@ -46,7 +45,7 @@ pub fn add_to_parent_module(
 
     // As the module is created programatically rather than #[pymodule], the
     // docs have to be set up manually rather than pyo3 parsing /// comments.
-    m.setattr("__doc__", format!("diffsol wrapper for {} type", &MODULE_NAME))?;
+    m.setattr("__doc__", format!("diffsol wrapper for {} type", &TYPE_NAME))?;
 
     parent_module.add_submodule(&m)
 }

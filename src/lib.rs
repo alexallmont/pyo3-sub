@@ -1,20 +1,10 @@
 use pyo3::prelude::*;
 
-#[path="private"]
-pub mod module_f32 {
-    type T = f32;
-    static MODULE_NAME:&'static str = "module_f32";
-    mod bindings;
-    pub use bindings::*;
-}
+#[path="private/create_binding.rs"]
+mod create_binding;
 
-#[path="private"]
-pub mod module_f64 {
-    type T = f64;
-    static MODULE_NAME:&'static str = "module_f64";
-    mod bindings;
-    pub use bindings::*;
-}
+create_binding!(f32, module_f32);
+create_binding!(f64, module_f64);
 
 /// Top-level module for diffsol bindings by type
 #[pymodule]
