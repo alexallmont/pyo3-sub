@@ -1,6 +1,5 @@
 use pyo3::prelude::*;
 
-#[path="private/create_binding.rs"]
 mod create_binding;
 
 create_binding!(f32, module_f32);

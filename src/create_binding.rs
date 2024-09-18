@@ -14,7 +14,7 @@ macro_rules! create_binding {
         $binding_type:tt,
         $module_name:tt
     ) => {
-        #[path="private"]
+        #[path="."]
         pub mod $module_name {
             // Module name, underlying type name and type
             static MODULE_NAME:&'static str = stringify!($module_name);
