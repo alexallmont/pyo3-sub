@@ -1,14 +1,22 @@
 use pyo3::prelude::*;
 
-/// Formats the sum of two numbers as string.
-#[pyfunction]
-fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
-    Ok((a + b).to_string())
+#[path = "impl"]
+pub mod module_f32 {
+    type T = f32;
+    mod pymod;
+    pub use pymod::*;
 }
 
-/// A Python module implemented in Rust.
+#[path = "impl"]
+pub mod module_f64 {
+    type T = f64;
+    mod pymod;
+    pub use pymod::*;
+}
+
 #[pymodule]
 fn pyo3_sub(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+    module_f32::register_module(m, "f32")?;
+    module_f64::register_module(m, "f64")?;
     Ok(())
 }
